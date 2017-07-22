@@ -7,20 +7,24 @@
 //
 
 import UIKit
+import os.log
 
 var soundState: Bool?
 var volumeSize: Int?
 
 class ViewController: UIViewController {
-    
-    var sound: Bool?
-    var volume: Int?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        soundState = true;
-        volumeSize = 50;
+        
+        if let sound = UserDefaults.standard.value(forKey: "soundState"), let volume = UserDefaults.standard.value(forKey: "volumeSize") {
+            soundState = sound as? Bool;
+            volumeSize = volume as? Int;
+        } else {
+            // Set default settins.
+            soundState = true;
+            volumeSize = 50;
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -30,7 +34,7 @@ class ViewController: UIViewController {
     
     // MARK: - Actions
     @IBAction func unwindToMainScene(sender: UIStoryboardSegue) {
-        
+        saveSettings()
     }
 
     /*
@@ -41,5 +45,14 @@ class ViewController: UIViewController {
         super.prepare(for: segue, sender: sender)
     }
     */
+    
+    // MARK: - Private Methods
+    
+    private func saveSettings() {
+        
+        UserDefaults.standard.set(soundState, forKey: "soundState")
+        UserDefaults.standard.set(volumeSize, forKey: "volumeSize")
+
+    }
 }
 
