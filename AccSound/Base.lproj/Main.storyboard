@@ -70,7 +70,7 @@
                     <navigationItem key="navigationItem" title="AccSound" id="7Zd-Sh-kkx">
                         <barButtonItem key="rightBarButtonItem" title="Setting" id="5sQ-Rh-qN4">
                             <connections>
-                                <segue destination="sv3-1O-YH6" kind="presentation" identifier="ChangeSetting" id="t11-Uo-nM1"/>
+                                <segue destination="Ihh-fS-Pdq" kind="presentation" id="wfu-Mu-9s9"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -82,7 +82,7 @@
         <!--Settings-->
         <scene sceneID="08e-UH-YVR">
             <objects>
-                <viewController id="fAa-BN-nZF" sceneMemberID="viewController">
+                <viewController id="fAa-BN-nZF" customClass="SettingViewController" customModule="AccSound" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="G9G-uk-bha"/>
                         <viewControllerLayoutGuide type="bottom" id="6tk-tW-X0c"/>
@@ -105,9 +105,15 @@
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gqy-9W-jVW">
                                 <rect key="frame" x="163" y="197.5" width="51" height="31"/>
+                                <connections>
+                                    <action selector="soundStateChanged:" destination="fAa-BN-nZF" eventType="valueChanged" id="P5p-Kf-2Ku"/>
+                                </connections>
                             </switch>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="SDF-5N-A5K">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="50" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="SDF-5N-A5K">
                                 <rect key="frame" x="73.5" y="373" width="229" height="31"/>
+                                <connections>
+                                    <action selector="volumeChanged:" destination="fAa-BN-nZF" eventType="valueChanged" id="1mp-3D-0h4"/>
+                                </connections>
                             </slider>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mv4-Th-I7x">
                                 <rect key="frame" x="0.0" y="64" width="375" height="133.5"/>
@@ -140,13 +146,27 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Settings" id="BXp-6f-j3d">
-                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="4gh-GE-VJd"/>
-                        <barButtonItem key="rightBarButtonItem" title="Done" id="XTN-c7-KsH"/>
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="4gh-GE-VJd">
+                            <connections>
+                                <action selector="cancel:" destination="fAa-BN-nZF" id="TP2-bq-rlC"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="XTN-c7-KsH">
+                            <connections>
+                                <segue destination="OTo-be-hGB" kind="unwind" unwindAction="unwindToMainSceneWithSender:" id="yRU-1P-jRM"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="saveSettingButton" destination="XTN-c7-KsH" id="2lC-5M-PBo"/>
+                        <outlet property="soundSwitch" destination="Gqy-9W-jVW" id="ldY-Ux-i6J"/>
+                        <outlet property="volumeSlider" destination="SDF-5N-A5K" id="aRu-0i-V3r"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hwu-TU-h1S" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="OTo-be-hGB" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2052" y="138.98050974512745"/>
+            <point key="canvasLocation" x="1935" y="139"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="JH4-yX-8pS">
@@ -165,22 +185,22 @@
             <point key="canvasLocation" x="-718" y="139"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="b8q-6k-F0x">
+        <scene sceneID="Pvu-QV-EvS">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="sv3-1O-YH6" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ihh-fS-Pdq" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cYa-rk-qqd">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Q0D-dw-dYr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="fAa-BN-nZF" kind="relationship" relationship="rootViewController" id="zXD-IC-tuR"/>
+                        <segue destination="fAa-BN-nZF" kind="relationship" relationship="rootViewController" id="UZe-M2-skV"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="h6e-Ub-rrf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kbg-DR-S0b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1112.8" y="138.98050974512745"/>
+            <point key="canvasLocation" x="1034" y="139"/>
         </scene>
     </scenes>
 </document>
