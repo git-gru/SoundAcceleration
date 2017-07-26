@@ -43,7 +43,6 @@ class SettingViewController: UIViewController {
         } else {
             sound = false;
         }
-        print(String(describing: soundState))
     }
 
     @IBAction func volumeChanged(_ sender: UISlider) {

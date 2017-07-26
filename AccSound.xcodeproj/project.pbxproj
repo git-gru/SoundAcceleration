@@ -13,6 +13,7 @@
 		852050C31F22317A0078BD6B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 852050C21F22317A0078BD6B /* Assets.xcassets */; };
 		852050C61F22317A0078BD6B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 852050C41F22317A0078BD6B /* LaunchScreen.storyboard */; };
 		852050D11F22317A0078BD6B /* AccSoundTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852050D01F22317A0078BD6B /* AccSoundTests.swift */; };
+		8532EE6B1F23EF0600AFDB2E /* sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 8532EE6A1F23EF0600AFDB2E /* sound.mp3 */; };
 		855DF7881F23139900DEA876 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 855DF7871F23139900DEA876 /* SettingViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +38,7 @@
 		852050CC1F22317A0078BD6B /* AccSoundTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AccSoundTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		852050D01F22317A0078BD6B /* AccSoundTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccSoundTests.swift; sourceTree = "<group>"; };
 		852050D21F22317A0078BD6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8532EE6A1F23EF0600AFDB2E /* sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sound.mp3; sourceTree = "<group>"; };
 		855DF7871F23139900DEA876 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -86,6 +88,7 @@
 				852050C21F22317A0078BD6B /* Assets.xcassets */,
 				852050C41F22317A0078BD6B /* LaunchScreen.storyboard */,
 				852050C71F22317A0078BD6B /* Info.plist */,
+				8532EE6A1F23EF0600AFDB2E /* sound.mp3 */,
 			);
 			path = AccSound;
 			sourceTree = "<group>";
@@ -184,6 +187,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8532EE6B1F23EF0600AFDB2E /* sound.mp3 in Resources */,
 				852050C61F22317A0078BD6B /* LaunchScreen.storyboard in Resources */,
 				852050C31F22317A0078BD6B /* Assets.xcassets in Resources */,
 				852050C11F22317A0078BD6B /* Main.storyboard in Resources */,

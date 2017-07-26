@@ -7,13 +7,27 @@
 //
 
 import UIKit
+import CoreLocation
+import AVFoundation
 import os.log
 
 var soundState: Bool?
 var volumeSize: Int?
+var oldLocation: CLLocation?
+var oldSpeed: Double = 0
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, CLLocationManagerDelegate {
 
+    // MARK: - Properties
+    @IBOutlet weak var speedLabel: UILabel!
+    @IBOutlet weak var accelerationLabel: UILabel!
+
+    @IBOutlet weak var distanceLabel: UILabel!
+    @IBOutlet weak var timediffLabel: UILabel!
+
+    var locationMgr: CLLocationManager!
+    var player: AVAudioPlayer = AVAudioPlayer()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,6 +39,27 @@ class ViewController: UIViewController {
             soundState = true;
             volumeSize = 50;
         }
+        
+        locationMgr = CLLocationManager()
+        locationMgr.desiredAccuracy = kCLLocationAccuracyBest
+        locationMgr.distanceFilter = 1
+        getLocation()
+        
+        do {
+            let path = Bundle.main.path(forResource: "sound", ofType: "mp3")
+            let url = URL(fileURLWithPath: path!)
+            
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            player = try AVAudioPlayer(contentsOf: url)
+            player.volume = 0
+            player.prepareToPlay()
+            player.play()
+            player.numberOfLoops = -1
+        } catch {
+            print("Couldn't load file :(")
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -33,10 +68,18 @@ class ViewController: UIViewController {
     }
     
     // MARK: - Actions
+    
     @IBAction func unwindToMainScene(sender: UIStoryboardSegue) {
+        if soundState == true {
+            player.play()
+        }
+        else {
+            player.stop()
+        }
+        
         saveSettings()
     }
-
+    
     /*
     // MARK: - Navigation
     
@@ -53,6 +96,58 @@ class ViewController: UIViewController {
         UserDefaults.standard.set(soundState, forKey: "soundState")
         UserDefaults.standard.set(volumeSize, forKey: "volumeSize")
 
+    }
+    
+    private func getLocation() {
+        let status  = CLLocationManager.authorizationStatus()
+        
+        if status == .notDetermined {
+            locationMgr.requestWhenInUseAuthorization()
+            return
+        }
+        
+        if status == .denied || status == .restricted {
+            let alert = UIAlertController(title: "Location Services Disabled", message: "Please enable Location Services in Settings", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(okAction)
+            
+            present(alert, animated: true, completion: nil)
+            return
+        }
+        
+        locationMgr.delegate = self
+        locationMgr.startUpdatingLocation()
+    }
+    
+    // MARK: - CLLocationManagerDelegate
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        let currentLocation = locations.last!
+        guard currentLocation.verticalAccuracy > 15 else {
+
+            if oldLocation != nil {
+                let distance = currentLocation.distance(from: oldLocation!)
+                distanceLabel.text = String(distance)
+                let timediff = currentLocation.timestamp.timeIntervalSince((oldLocation?.timestamp)!)
+                timediffLabel.text = String(timediff)
+                let speed = distance/timediff
+                speedLabel.text = String(speed)
+                if oldSpeed >= 0 && speed >= 0 {
+                    let accelerate = (speed - oldSpeed) / timediff
+                    accelerationLabel.text = String(accelerate)
+                    oldSpeed = speed
+                    player.setVolume(Float(accelerate * Double(volumeSize!)), fadeDuration: 0.5)
+                }
+            }
+            oldLocation = currentLocation
+            return
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error \(error)")
     }
 }
 
