@@ -12,7 +12,7 @@ import AVFoundation
 import os.log
 
 var soundState: Bool?
-var volumeSize: Int?
+var volumeSize: Double?
 var oldLocation: CLLocation?
 var oldSpeed: Double = 0
 
@@ -24,6 +24,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 
     @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var timediffLabel: UILabel!
+    @IBOutlet weak var volumeLabel: UILabel!
 
     var locationMgr: CLLocationManager!
     var player: AVAudioPlayer = AVAudioPlayer()
@@ -33,15 +34,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         if let sound = UserDefaults.standard.value(forKey: "soundState"), let volume = UserDefaults.standard.value(forKey: "volumeSize") {
             soundState = sound as? Bool;
-            volumeSize = volume as? Int;
+            volumeSize = volume as? Double;
         } else {
             // Set default settins.
             soundState = true;
-            volumeSize = 50;
+            volumeSize = 0.5;
         }
         
         locationMgr = CLLocationManager()
-        locationMgr.desiredAccuracy = kCLLocationAccuracyBest
+        locationMgr.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         locationMgr.distanceFilter = 1
         getLocation()
         
@@ -125,7 +126,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         let currentLocation = locations.last!
-        guard currentLocation.verticalAccuracy > 15 else {
+        guard currentLocation.verticalAccuracy > 10 else {
 
             if oldLocation != nil {
                 let distance = currentLocation.distance(from: oldLocation!)
@@ -138,7 +139,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
                     let accelerate = (speed - oldSpeed) / timediff
                     accelerationLabel.text = String(accelerate)
                     oldSpeed = speed
-                    player.setVolume(Float(accelerate * Double(volumeSize!)), fadeDuration: 0.5)
+                    var volume: Float
+                    volume = Float(accelerate * volumeSize!)
+                    if volume < 0 {
+                        volume = 0
+                    }
+                    volumeLabel.text = String(volume)
+                    player.setVolume(volume, fadeDuration: 0.5)
                 }
             }
             oldLocation = currentLocation

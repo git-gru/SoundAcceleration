@@ -14,7 +14,7 @@ class SettingViewController: UIViewController {
     // MARK: - Properties
     
     var sound: Bool?
-    var volume: Int?
+    var volume: Double?
     
     @IBOutlet weak var soundSwitch: UISwitch!
     @IBOutlet weak var saveSettingButton: UIBarButtonItem!
@@ -46,7 +46,7 @@ class SettingViewController: UIViewController {
     }
 
     @IBAction func volumeChanged(_ sender: UISlider) {
-        volume = Int(sender.value)
+        volume = Double(sender.value)
         print(String(describing: volume))
     }
     
